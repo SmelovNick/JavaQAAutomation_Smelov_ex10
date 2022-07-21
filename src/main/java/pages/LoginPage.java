@@ -23,7 +23,7 @@ public class LoginPage extends BasePage{
     public LoginPage(WebDriver driver){
         super(driver);
         URL += "";
-        PageFactory.initElements(driver, this);
+
     }
 
     public void open(){
@@ -40,5 +40,11 @@ public class LoginPage extends BasePage{
 
     public void clickLoginButton(){
         submitButton.click();
+    }
+
+    public void loginUser(String user, String pass) {
+        fillUsernameInput(user);
+        fillPasswordInput(pass);
+        clickLoginButton();
     }
 }

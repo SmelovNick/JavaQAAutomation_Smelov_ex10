@@ -26,9 +26,8 @@ public class HomeworkTest extends WebTests{
 
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
-        loginPage.fillUsernameInput("standard_user");
-        loginPage.fillPasswordInput("secret_sauce");
-        loginPage.clickLoginButton();
+        loginPage.loginUser("standard_user", "secret_sauce");
+
 //        driver.navigate().to("http://saucedemo.com");
 //        driver.findElement(By.xpath("//input[contains(@class, 'form_input') and @data-test='username']")).clear();
 //        driver.findElement(By.xpath("//input[contains(@class, 'form_input') and @data-test='username']")).sendKeys("standard_user");

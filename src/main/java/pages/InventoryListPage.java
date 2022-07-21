@@ -27,7 +27,6 @@ public class InventoryListPage extends BasePage{
     public InventoryListPage(WebDriver driver) {
         super(driver);
         URL += "/inventory.html";
-        PageFactory.initElements(driver, this);
     }
 
     public void clickBurgerMenuButton(){
