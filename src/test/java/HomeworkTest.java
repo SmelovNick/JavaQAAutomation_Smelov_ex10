@@ -1,12 +1,12 @@
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import pages.InventoryListPage;
+import pages.LoginPage;
 
 import java.util.List;
 
@@ -17,23 +17,24 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 //ѕридумать и запрограммировать 5 различных тест-кейсов
 //»спользовать поиск элементов по локаторам CSS или Xpath (можно и те и другие), не допускаетс€ использование методов By.id() или By.name()
 
-public class HomeworkTest {
+public class HomeworkTest extends WebTests{
     private WebDriver driver;
-
-    @BeforeAll
-    static void setupClass(){
-        WebDriverManager.chromedriver().setup();
-    }
 
     @BeforeEach
     void setup() {
         driver = new ChromeDriver();
-        driver.navigate().to("http://saucedemo.com");
-        driver.findElement(By.xpath("//input[contains(@class, 'form_input') and @data-test='username']")).clear();
-        driver.findElement(By.xpath("//input[contains(@class, 'form_input') and @data-test='username']")).sendKeys("standard_user");
-        driver.findElement(By.xpath("//input[contains(@class, 'form_input') and @data-test='password']")).clear();
-        driver.findElement(By.xpath("//input[contains(@class, 'form_input') and @data-test='password']")).sendKeys("secret_sauce");
-        driver.findElement(By.xpath("//input[contains(@class, 'submit-button')]")).click();
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+        loginPage.fillUsernameInput("standard_user");
+        loginPage.fillPasswordInput("secret_sauce");
+        loginPage.clickLoginButton();
+//        driver.navigate().to("http://saucedemo.com");
+//        driver.findElement(By.xpath("//input[contains(@class, 'form_input') and @data-test='username']")).clear();
+//        driver.findElement(By.xpath("//input[contains(@class, 'form_input') and @data-test='username']")).sendKeys("standard_user");
+//        driver.findElement(By.xpath("//input[contains(@class, 'form_input') and @data-test='password']")).clear();
+//        driver.findElement(By.xpath("//input[contains(@class, 'form_input') and @data-test='password']")).sendKeys("secret_sauce");
+//        driver.findElement(By.xpath("//input[contains(@class, 'submit-button')]")).click();
     }
 
     @Test
@@ -43,7 +44,8 @@ public class HomeworkTest {
 
     @Test
     void allItemsMustHaveAddToCartButtonTest(){
-        int itemsCount = driver.findElements(By.xpath("//div[@class='inventory_list']/div[@class='inventory_item']")).size();
+        InventoryListPage inventoryListPage = new InventoryListPage(driver);
+        int itemsCount = inventoryListPage.getInventoryItemCount();
         int buttonsCount = driver.findElements(By.xpath("//div[@class='inventory_item']//button[starts-with(@data-test, 'add-to-cart-')]")).size();
         assertEquals(itemsCount, buttonsCount, "Number of AddToCart button doesn't equal to Number of items");
     }
