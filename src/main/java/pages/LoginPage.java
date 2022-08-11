@@ -1,5 +1,9 @@
 package pages;
 
+import config.Config;
+import extensions.Driver;
+import extensions.Element;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -8,43 +12,42 @@ import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage extends BasePage{
 
-    @FindBy(how = How.XPATH, using = "//input[contains(@class, 'form_input') and @data-test='username']")
-    private WebElement usernameInput;
-    //driver.findElement(By.xpath("//input[contains(@class, 'form_input') and @data-test='username']")).sendKeys("standard_user");
+    private Element usernameInput = new Element(How.XPATH, "//input[contains(@class, 'form_input') and @data-test='username']");
+    private Element passwordInput = new Element(How.XPATH, "//input[contains(@class, 'form_input') and @data-test='password']");
+    private Element submitButton = new Element(How.XPATH, "//input[contains(@class, 'submit-button')]");
 
-    @FindBy(how = How.XPATH, using = "//input[contains(@class, 'form_input') and @data-test='password']")
-    private WebElement passwordInput;
-    //driver.findElement(By.xpath("//input[contains(@class, 'form_input') and @data-test='password']")).sendKeys("secret_sauce");
 
-    @FindBy(how = How.XPATH, using = "//input[contains(@class, 'submit-button')]")
-    private WebElement submitButton;
-    //driver.findElement(By.xpath("//input[contains(@class, 'submit-button')]")).click();
-
-    public LoginPage(WebDriver driver){
-        super(driver);
+    public LoginPage(){
         URL += "";
-
     }
 
-    public void open(){
-        driver.navigate().to(URL);
+
+    public LoginPage open(){
+        Driver.get().navigate().to(URL);
+        return this;
     }
 
-    public void fillUsernameInput(String s){
+    @Step("Fill username input with value {s}")
+    public LoginPage fillUsernameInput(String s){
         usernameInput.sendKeys(s);
+        return this;
     }
 
-    public void fillPasswordInput(String s){
+    @Step("Fill password input with value {0}")
+    public LoginPage fillPasswordInput(String s){
         passwordInput.sendKeys(s);
+        return this;
     }
 
-    public void clickLoginButton(){
+    @Step("Click login button")
+    public InventoryListPage clickLoginButton(){
         submitButton.click();
+        return new InventoryListPage();
     }
 
-    public void loginUser(String user, String pass) {
-        fillUsernameInput(user);
-        fillPasswordInput(pass);
-        clickLoginButton();
+    public InventoryListPage loginUser(String username, String password) {
+        return fillUsernameInput(username)
+                .fillPasswordInput(password)
+                .clickLoginButton();
     }
 }
